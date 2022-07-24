@@ -6,20 +6,82 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BankingApplicationController">
    <children>
       <Label text="Select an account or input to create your own">
          <VBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <TextField>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin></TextField>
+      <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
-            <ComboBox fx:id="AccountComboBox" prefWidth="150.0">
+            <Button fx:id="openAccountButton" mnemonicParsing="false"  text="Open this account" onAction="#openAccountDetails">
                <HBox.margin>
-                  <Insets left="100.0" right="100.0" />
-               </HBox.margin>
-            </ComboBox>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin></Button>
+            <Button mnemonicParsing="false" text="Create an Account" onAction="#createAccountDetails">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+      <HBox prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Label text="Account ID: ">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Label>
+            <Label text="****">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Label text="Accountholder Name: ">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Label>
+            <Label text="****">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Label text="Balance: ">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Label>
+            <Label text="****">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="50.0" prefWidth="200.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <children>
+            <Button fx:id="depositButton" mnemonicParsing="false"  text="Deposit">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Button>
+            <Button fx:id="withdrawButton" mnemonicParsing="false"  text="Withdraw">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Button>
+            <Button fx:id="transferButton" mnemonicParsing="false"  text="Transfer">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></Button>
          </children>
       </HBox>
    </children>
