@@ -9,14 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 
 
+
+
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader= new FXMLLoader();
 			VBox root= loader.load(new FileInputStream("src/application/BankingApplicationView.fxml"));
-			BankingApplicationController controller= (BankingApplicationController) loader.getController();
-			controller.applicationStage=primaryStage;
+			
 			Scene scene = new Scene(root,400,400);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Mahtaab's Java Project");
