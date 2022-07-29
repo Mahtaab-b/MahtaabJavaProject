@@ -20,8 +20,32 @@ public class BankingApplicationController {
     @FXML
     
     void createAccountDetails (ActionEvent event) {
-    	Scene createDetailScene = new Scene(new Label("placeholder label"));
-    	applicationStage.setScene(createDetailScene);
+		Scene mainScene = applicationStage.getScene();
+    	
+    	VBox createDetailsContainer = new VBox();
+    	HBox idHbox = new HBox();
+    	HBox balanceHbox = new HBox();
+    	Label addAccountHolderIdLabel= new Label ("Add an account holder ID: ");
+    	Label addBalanceLabel= new Label ("Add your starting balance: ");
+    	HBox accountHolderNameHBox= new HBox();
+    	Label addAccountHolderNameLabel= new Label ("Add an account holder name: ");
+    	TextField idNumber= new TextField();
+    	TextField accountHolderName= new TextField();
+    	TextField balanceField= new TextField();
+    	balanceHbox.getChildren().addAll(addBalanceLabel, balanceField);
+    	
+    	idHbox.getChildren().addAll(addAccountHolderIdLabel, idNumber);
+    	accountHolderNameHBox.getChildren().addAll(addAccountHolderNameLabel, accountHolderName);
+    	
+    	createDetailsContainer.getChildren().addAll(idHbox,accountHolderNameHBox,balanceHbox);
+    	
+    	Button doneButton = new Button("Done");
+		doneButton.setOnAction(doneEvent -> applicationStage.setScene(mainScene));
+		createDetailsContainer.getChildren().add(doneButton);
+
+		Scene createDetailsScene = new Scene(createDetailsContainer,400,100);
+		applicationStage.setScene(createDetailsScene);
+
     	
     	 
     	
