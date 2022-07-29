@@ -1,11 +1,12 @@
 package application;
 
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -16,47 +17,74 @@ public class BankingApplicationController {
 	
 	Stage applicationStage;
 
+	public ArrayList<Account> bankAccountsRegistered = new ArrayList<Account>();
     
     @FXML
     
-    void createAccountDetails (ActionEvent event) {
+    void createAccountsScene (ActionEvent event) {
+    	
+    	//Set the default scene to the main landing scene
 		Scene mainScene = applicationStage.getScene();
     	
+		//Add an array list to store the values of the text fields
+		ArrayList<TextField> accountTextFields = new ArrayList<TextField>();
+		
+		//Create a new container to serve as form with the following fields.
     	VBox createDetailsContainer = new VBox();
-    	HBox idHbox = new HBox();
-    	HBox balanceHbox = new HBox();
-    	Label addAccountHolderIdLabel= new Label ("Add an account holder ID: ");
+    	
+    	//Create fields for the user to input their account number, name and starting balance when creating a new account.
+    	HBox addAccountNumberHBox = new HBox();
+    	Label addAccountNumberLabel= new Label ("Add an account holder ID: ");
+    	TextField addAccountNumberTextField= new TextField();
+    	addAccountNumberHBox.getChildren().addAll(addAccountNumberLabel, addAccountNumberTextField);
+    	
+    	HBox addBalanceHBox = new HBox();
     	Label addBalanceLabel= new Label ("Add your starting balance: ");
-    	HBox accountHolderNameHBox= new HBox();
+    	TextField addBalanceTextField= new TextField();
+    	addBalanceHBox.getChildren().addAll(addBalanceLabel, addBalanceTextField);
+    	
+    	HBox addAccountHolderNameHBox= new HBox();
     	Label addAccountHolderNameLabel= new Label ("Add an account holder name: ");
-    	TextField idNumber= new TextField();
-    	TextField accountHolderName= new TextField();
-    	TextField balanceField= new TextField();
-    	balanceHbox.getChildren().addAll(addBalanceLabel, balanceField);
+    	TextField addAccountHolderNameTextField= new TextField();
+    	addAccountHolderNameHBox.getChildren().addAll(addAccountHolderNameLabel, addAccountHolderNameTextField);
     	
-    	idHbox.getChildren().addAll(addAccountHolderIdLabel, idNumber);
-    	accountHolderNameHBox.getChildren().addAll(addAccountHolderNameLabel, accountHolderName);
+    	//Add all the fields to the container to create the form.
+    	createDetailsContainer.getChildren().addAll(addAccountNumberHBox,addAccountHolderNameHBox,addBalanceHBox);
     	
-    	createDetailsContainer.getChildren().addAll(idHbox,accountHolderNameHBox,balanceHbox);
+    	//Add fields to array list
     	
-    	Button doneButton = new Button("Done");
-		doneButton.setOnAction(doneEvent -> applicationStage.setScene(mainScene));
-		createDetailsContainer.getChildren().add(doneButton);
-
+    	accountTextFields.add(addAccountNumberTextField);
+    	accountTextFields.add(addAccountHolderNameTextField);
+    	accountTextFields.add(addBalanceTextField);
+    	
+    	
+    	
+    	//Create a button for user to return to the main scene when they've completed an account.
+    	Button doneCreatingAccountButton = new Button("Done Creating Account");
+    	doneCreatingAccountButton.setOnAction(doneCreatingAccountEvent -> addAnAccount(mainScene, addAccountNumberTextField, addAccountHolderNameTextField,addBalanceTextField));
+		createDetailsContainer.getChildren().add(doneCreatingAccountButton);
+		
+		//Load the account creation scene from the main scene.
 		Scene createDetailsScene = new Scene(createDetailsContainer,400,100);
 		applicationStage.setScene(createDetailsScene);
 
-    	
-    	 
-    	
+    
     }
     
-    @FXML
-    
-    void openAccountDetails (ActionEvent event) {
+  void addAnAccount (Scene mainScene, TextField addAccountNumberTextField, TextField addAccountHolderNameTextField, TextField addBalanceTextField ) {
     	
+    	applicationStage.setScene(mainScene);
+    	
+    	double balanceValue= Double.parseDouble(addBalanceTextField.getText());
+    	
+    	Account bankAccount= new Account(addAccountNumberTextField.getText(),addAccountHolderNameTextField.getText(), balanceValue);
+    	
+    	bankAccountsRegistered.add(bankAccount);
+    	
+    	System.out.println(bankAccountsRegistered);
     }
-  
+    
+
     
 
 }

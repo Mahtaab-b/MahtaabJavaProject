@@ -19,11 +19,11 @@
          </VBox.margin></TextField>
       <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button fx:id="openAccountButton" mnemonicParsing="false"  text="Open this account" onAction="#openAccountDetails">
+            <Button mnemonicParsing="false"  text="Open this account">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" text="Create an Account" onAction="#createAccountDetails">
+            <Button mnemonicParsing="false" onAction="#createAccountsScene" text="Create an Account">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin></Button>
@@ -31,7 +31,7 @@
       </HBox>
       <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Label text="Account ID: ">
+            <Label text="Account Number: ">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
@@ -47,7 +47,7 @@
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
-            <Label text="****">
+            <Label  text="accountHolderNameLabel">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
@@ -70,15 +70,15 @@
             <Insets />
          </VBox.margin>
          <children>
-            <Button fx:id="depositButton" mnemonicParsing="false"  text="Deposit">
+            <Button  mnemonicParsing="false" text="Deposit">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button fx:id="withdrawButton" mnemonicParsing="false"  text="Withdraw">
+            <Button  mnemonicParsing="false" text="Withdraw">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button fx:id="transferButton" mnemonicParsing="false"  text="Transfer">
+            <Button  mnemonicParsing="false" text="Transfer">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
