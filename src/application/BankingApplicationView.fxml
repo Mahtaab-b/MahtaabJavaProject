@@ -13,13 +13,13 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <TextField>
+      <TextField fx:id="searchAccountTextField">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin></TextField>
       <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false"  text="Open this account">
+            <Button mnemonicParsing="false" onAction="#openAnAccountScene" text="Open this account">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin></Button>
@@ -35,7 +35,7 @@
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
-            <Label text="****">
+            <Label fx:id="accountNumberDisplay" text="****">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
@@ -47,7 +47,7 @@
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
-            <Label  text="accountHolderNameLabel">
+            <Label fx:id="accountHolderNameDisplay" text="****">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
@@ -59,7 +59,7 @@
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
-            <Label text="****">
+            <Label fx:id="balanceDisplay" text="****">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Label>
@@ -70,15 +70,15 @@
             <Insets />
          </VBox.margin>
          <children>
-            <Button  mnemonicParsing="false" text="Deposit">
+            <Button mnemonicParsing="false" text="Deposit">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button  mnemonicParsing="false" text="Withdraw">
+            <Button mnemonicParsing="false" text="Withdraw">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button  mnemonicParsing="false" text="Transfer">
+            <Button mnemonicParsing="false" text="Transfer">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>

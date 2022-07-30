@@ -14,11 +14,29 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class BankingApplicationController {
+
+	
+	@ FXML
+	
+	private Label accountNumberDisplay;
+	
+	@ FXML
+	
+	private Label accountHolderNameDisplay;
+	
+	@ FXML
+	
+	private Label balanceDisplay;
+	
+	@FXML
+	
+	private TextField searchAccountTextField;
 	
 	Stage applicationStage;
 
+	//Create the list of bank accounts opened in the application.
 	public ArrayList<Account> bankAccountsRegistered = new ArrayList<Account>();
-    
+	
     @FXML
     
     void createAccountsScene (ActionEvent event) {
@@ -71,6 +89,8 @@ public class BankingApplicationController {
     
     }
     
+  //The following method is called upon to add a new account to the list of accounts opened and return the user to the main scene.
+    
   void addAnAccount (Scene mainScene, TextField addAccountNumberTextField, TextField addAccountHolderNameTextField, TextField addBalanceTextField ) {
     	
     	applicationStage.setScene(mainScene);
@@ -82,9 +102,34 @@ public class BankingApplicationController {
     	bankAccountsRegistered.add(bankAccount);
     	
     	System.out.println(bankAccountsRegistered);
+    	
+    	 accountNumberDisplay.setText("");
+		 accountHolderNameDisplay.setText("");
     }
     
+  @FXML
+  
+  void openAnAccountScene (ActionEvent event) {
+	  
+	  String search= searchAccountTextField.getText();
+	  
+	  System.out.println(search);
+	  
+	  int index=0;
+	  
+	  while (index < bankAccountsRegistered.size()) {
+		  
+		  if (search.equals(bankAccountsRegistered.get(index).getAccountNumber())) {
+			  
+			  accountNumberDisplay.setText(bankAccountsRegistered.get(index).getAccountNumber());
+			  accountHolderNameDisplay.setText(bankAccountsRegistered.get(index).getLoginName());
+			  //balanceDisplay.setText(bankAccountsRegistered.get(index).getBalance());
+	  }
+	
+	  index++;
+  }
 
     
 
+}
 }
