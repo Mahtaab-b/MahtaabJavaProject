@@ -1,6 +1,7 @@
 package application;
 
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
@@ -41,6 +42,7 @@ public class BankingApplicationController {
     
     void createAccountsScene (ActionEvent event) {
     	
+    
     	//Set the default scene to the main landing scene
 		Scene mainScene = applicationStage.getScene();
     	
@@ -103,8 +105,9 @@ public class BankingApplicationController {
     	
     	System.out.println(bankAccountsRegistered);
     	
-    	 accountNumberDisplay.setText("");
-		 accountHolderNameDisplay.setText("");
+    	accountNumberDisplay.setText("");
+		accountHolderNameDisplay.setText("");
+		balanceDisplay.setText("");
     }
     
   @FXML
@@ -123,7 +126,7 @@ public class BankingApplicationController {
 			  
 			  accountNumberDisplay.setText(bankAccountsRegistered.get(index).getAccountNumber());
 			  accountHolderNameDisplay.setText(bankAccountsRegistered.get(index).getLoginName());
-			  //balanceDisplay.setText(bankAccountsRegistered.get(index).getBalance());
+			  balanceDisplay.setText("$"+String.valueOf(bankAccountsRegistered.get(index).getBalance()));
 	  }
 	
 	  index++;
