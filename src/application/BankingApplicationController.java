@@ -170,7 +170,7 @@ public class BankingApplicationController {
 
 		// Take the users current account number entry from the
 		// addAccountNumberTextField TextField.
-		String searchExisting = addAccountNumberTextField.getText();
+		String search = addAccountNumberTextField.getText();
 
 		// Convert the users balance entry from a string to double.
 		double balanceValue = Double.parseDouble(addBalanceTextField.getText());
@@ -180,7 +180,7 @@ public class BankingApplicationController {
 				balanceValue);
 
 		// Stores the number of duplicates of the requested account, if any.
-		int existsSum = searchIfAccountExists(addAccountNumberTextField.getText());
+		int existsSum = searchIfAccountExists(search);
 
 		// If the list of registered accounts is empty add the new account directly.
 		if (bankAccountsRegistered.size() == 0) {
