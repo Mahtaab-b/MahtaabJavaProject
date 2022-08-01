@@ -16,8 +16,8 @@ public class Main extends Application {
 			FXMLLoader loader= new FXMLLoader();
 			VBox root= loader.load(new FileInputStream("src/application/BankingApplicationView.fxml"));
 			BankingApplicationController controller= (BankingApplicationController) loader.getController();
-			controller.applicationStage = primaryStage;
-			Scene scene = new Scene(root,350,300);
+			controller.setApplicationStage(primaryStage);
+			Scene scene = new Scene(root,300,400);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Mahtaab's Java Project");
 			primaryStage.show();
