@@ -38,7 +38,7 @@ public class BankingApplicationController {
 	private Stage applicationStage;
 
 	// Create the list of bank accounts opened in the application.
-	private ArrayList<Account> bankAccountsRegistered = new ArrayList<Account>();
+	Bank accountsRegistered= new Bank();
 
 	Account testOne = new Account("1", "Mahtaab", 50);
 	Account testTwo = new Account("2", "Kevin", 50);
@@ -52,58 +52,13 @@ public class BankingApplicationController {
 		this.applicationStage = applicationStage;
 	}
 
-	public ArrayList<Account> getBankAccountsRegistered() {
-		return bankAccountsRegistered;
-	}
-
-	public void setBankAccountsRegistered(ArrayList<Account> bankAccountsRegistered) {
-		this.bankAccountsRegistered = bankAccountsRegistered;
-	}
 
 	public void addTests() {
-		getBankAccountsRegistered().add(testOne);
-		getBankAccountsRegistered().add(testTwo);
+		accountsRegistered.addBankAccounts(testOne);
+		accountsRegistered.addBankAccounts(testTwo);
 
 	}
 
-	int searchIfAccountExists(String accountNumber) {
-
-		int exists = 0;
-
-		int index = 0;
-
-		while (index < getBankAccountsRegistered().size()) {
-
-			if (accountNumber.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
-				exists += 1;
-				break;
-			}
-
-			index++;
-		}
-
-		return exists;
-
-	}
-
-	Account accountSaver(String accountNumber) {
-
-		Account takeThisAccount = new Account();
-
-		int index = 0;
-
-		while (index < getBankAccountsRegistered().size()) {
-
-			if (accountNumber.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
-				takeThisAccount = getBankAccountsRegistered().get(index);
-				break;
-			}
-
-			index++;
-		}
-
-		return takeThisAccount;
-	}
 
 	@FXML
 
@@ -180,16 +135,16 @@ public class BankingApplicationController {
 				balanceValue);
 
 		// Stores the number of duplicates of the requested account, if any.
-		int existsSum = searchIfAccountExists(search);
+		int existsSum = accountsRegistered.searchIfAccountExists(search);
 
 		// If the list of registered accounts is empty add the new account directly.
-		if (bankAccountsRegistered.size() == 0) {
+		if (accountsRegistered.getBank().size() == 0) {
 			getApplicationStage().setScene(mainScene);
 			searchErrorLabel.setText("");
 
-			getBankAccountsRegistered().add(bankAccount);
+			accountsRegistered.addBankAccounts(bankAccount);
 
-			System.out.println(getBankAccountsRegistered());
+			System.out.println(accountsRegistered.getBank());
 
 			accountNumberDisplay.setText("");
 			accountHolderNameDisplay.setText("");
@@ -204,9 +159,9 @@ public class BankingApplicationController {
 				getApplicationStage().setScene(mainScene);
 				searchErrorLabel.setText("");
 
-				getBankAccountsRegistered().add(bankAccount);
+				accountsRegistered.addBankAccounts(bankAccount);
 
-				System.out.println(getBankAccountsRegistered());
+				System.out.println(accountsRegistered.getBank());
 
 				accountNumberDisplay.setText("");
 				accountHolderNameDisplay.setText("");
@@ -230,14 +185,14 @@ public class BankingApplicationController {
 
 		String search = searchAccountTextField.getText();
 
-		if (searchIfAccountExists(search) == 0) {
+		if (accountsRegistered.searchIfAccountExists(search) == 0) {
 			searchErrorLabel.setText("No account found");
 		}
 
 		else {
-			accountNumberDisplay.setText(accountSaver(search).getAccountNumber());
-			accountHolderNameDisplay.setText(accountSaver(search).getLoginName());
-			balanceDisplay.setText("$" + String.valueOf(accountSaver(search).getBalance()));
+			accountNumberDisplay.setText(accountsRegistered.accountSaver(search).getAccountNumber());
+			accountHolderNameDisplay.setText(accountsRegistered.accountSaver(search).getLoginName());
+			balanceDisplay.setText("$" + String.valueOf(accountsRegistered.accountSaver(search).getBalance()));
 
 		}
 
@@ -284,7 +239,7 @@ public class BankingApplicationController {
 		String search = searchAccountTextField.getText();
 
 		// Create a new account to reference in the withdrawal method later.
-		Account withdrawalAccount = accountSaver(search);
+		Account withdrawalAccount = accountsRegistered.accountSaver(search);
 
 		// Update the balance of the requested account and display the updated value.
 		withdrawalAccount.withdraw(Double.parseDouble(withdrawalAmountTextField.getText()));
@@ -332,7 +287,7 @@ public class BankingApplicationController {
 		String search = searchAccountTextField.getText();
 
 		// Create a new account to reference in the deposit method later.
-		Account depositAccount = accountSaver(search);
+		Account depositAccount = accountsRegistered.accountSaver(search);
 
 		// Update the balance of the requested account and display the updated value.
 		depositAccount.deposit(Double.parseDouble(depositAmountTextField.getText()));
@@ -384,7 +339,7 @@ public class BankingApplicationController {
 			Label transferAccountErrorLabel) {
 
 		// Check if the account the user would like to transfer to exists.
-		if (searchIfAccountExists(transferAccountTextField.getText()) == 0) {
+		if (accountsRegistered.searchIfAccountExists(transferAccountTextField.getText()) == 0) {
 			transferAccountErrorLabel.setText("Account does not exist");
 		}
 
@@ -394,8 +349,8 @@ public class BankingApplicationController {
 			getApplicationStage().setScene(mainScene);
 
 			// Store the accounts involved in the transfer in their respective variables.
-			Account accountToTrasnferTo = accountSaver(transferAccountTextField.getText());
-			Account currentAccount = accountSaver(searchAccountTextField.getText());
+			Account accountToTrasnferTo = accountsRegistered.accountSaver(transferAccountTextField.getText());
+			Account currentAccount = accountsRegistered.accountSaver(searchAccountTextField.getText());
 
 			// Update the balance of the requested account and display the updated value.
 			currentAccount.transfer(accountToTrasnferTo, (Double.parseDouble(transferAmountTextField.getText())));
