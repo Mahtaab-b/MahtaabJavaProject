@@ -66,6 +66,45 @@ public class BankingApplicationController {
 
 	}
 
+	int searchIfAccountExists(String accountNumber) {
+
+		int exists = 0;
+
+		int index = 0;
+
+		while (index < getBankAccountsRegistered().size()) {
+
+			if (accountNumber.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
+				exists += 1;
+				break;
+			}
+
+			index++;
+		}
+
+		return exists;
+
+	}
+
+	Account accountSaver(String accountNumber) {
+
+		Account takeThisAccount = new Account();
+
+		int index = 0;
+
+		while (index < getBankAccountsRegistered().size()) {
+
+			if (accountNumber.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
+				takeThisAccount = getBankAccountsRegistered().get(index);
+				break;
+			}
+
+			index++;
+		}
+
+		return takeThisAccount;
+	}
+
 	@FXML
 
 	void createAccountsScene(ActionEvent event) {
@@ -140,7 +179,8 @@ public class BankingApplicationController {
 		Account bankAccount = new Account(addAccountNumberTextField.getText(), addAccountHolderNameTextField.getText(),
 				balanceValue);
 
-		int existsSum = 0;
+		// Stores the number of duplicates of the requested account, if any.
+		int existsSum = searchIfAccountExists(addAccountNumberTextField.getText());
 
 		// If the list of registered accounts is empty add the new account directly.
 		if (bankAccountsRegistered.size() == 0) {
@@ -156,22 +196,7 @@ public class BankingApplicationController {
 			balanceDisplay.setText("");
 		}
 
-		// If the list of registered accounts contains at least one account check for a
-		// duplicate.
 		else {
-			int accountIndex = 0;
-
-			while (accountIndex < bankAccountsRegistered.size()) {
-				String currentEntry = bankAccountsRegistered.get(accountIndex).getAccountNumber();
-
-				if (searchExisting.equals(currentEntry)) {
-					System.out.println("this account exists.");
-					existsSum += 1;
-					break;
-				}
-				accountIndex++;
-
-			}
 
 			// If there are no duplicates add the account.
 			if (existsSum == 0) {
@@ -194,45 +219,6 @@ public class BankingApplicationController {
 			}
 		}
 	}
-	
-	int searchIfAccountExists (String accountNumber) {
-		
-		int exists=0;
-		
-		int index=0;
-		
-		while (index < getBankAccountsRegistered().size()) {
-
-			if (accountNumber.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
-				exists += 1;
-				break;
-			}
-
-			index++;
-		}
-		
-		return exists;
-		
-	}
-	
-	Account accountSaver(String accountNumber) {
-		
-		Account takeThisAccount=new Account();
-		
-		int index=0;
-		
-		while (index < getBankAccountsRegistered().size()) {
-
-			if (accountNumber.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
-				takeThisAccount=getBankAccountsRegistered().get(index);
-				break;
-			}
-
-			index++;
-		}
-		
-		return takeThisAccount;
-	}
 
 	@FXML
 
@@ -241,37 +227,18 @@ public class BankingApplicationController {
 		searchErrorLabel.setText("");
 
 		// Stores the account the user enters in a variable.
-		
+
 		String search = searchAccountTextField.getText();
 
-		/*int accountExists = 0;
-
-		int index = 0;
-
-		while (index < getBankAccountsRegistered().size()) {
-
-			if (search.equals(getBankAccountsRegistered().get(index).getAccountNumber())) {
-				accountNumberDisplay.setText(getBankAccountsRegistered().get(index).getAccountNumber());
-				accountHolderNameDisplay.setText(getBankAccountsRegistered().get(index).getLoginName());
-				balanceDisplay.setText("$" + String.valueOf(getBankAccountsRegistered().get(index).getBalance()));
-				accountExists += 1;
-				break;
-			}
-
-			index++;
-		}
-		
-		
-*/
 		if (searchIfAccountExists(search) == 0) {
 			searchErrorLabel.setText("No account found");
 		}
-		
+
 		else {
 			accountNumberDisplay.setText(accountSaver(search).getAccountNumber());
 			accountHolderNameDisplay.setText(accountSaver(search).getLoginName());
 			balanceDisplay.setText("$" + String.valueOf(accountSaver(search).getBalance()));
-			
+
 		}
 
 	}
@@ -318,13 +285,13 @@ public class BankingApplicationController {
 
 		// Create a new account to reference in the withdrawal method later.
 		Account withdrawalAccount = accountSaver(search);
-				
+
 		// Update the balance of the requested account and display the updated value.
 		withdrawalAccount.withdraw(Double.parseDouble(withdrawalAmountTextField.getText()));
 		balanceDisplay.setText("Updated: $" + String.valueOf(withdrawalAccount.getBalance()));
 
 	}
-	
+
 	@FXML
 
 	void startDeposit() {
@@ -372,7 +339,7 @@ public class BankingApplicationController {
 		balanceDisplay.setText("Updated: $" + String.valueOf(depositAccount.getBalance()));
 
 	}
-	
+
 	@FXML
 
 	void startTransfer() {
@@ -383,15 +350,16 @@ public class BankingApplicationController {
 		// Create the containers for fields.
 		VBox transferContainer = new VBox();
 		HBox transferEntryBox = new HBox();
-		HBox transferAccountBox= new HBox();
+		HBox transferAccountBox = new HBox();
 		transferContainer.getChildren().addAll(transferAccountBox, transferEntryBox);
-		
+
 		// Create the user account input section and instructions.
 		Label transferAccountInstructionLabel = new Label("Enter the account number you'd like to transfer to.");
 		TextField transferAccountTextField = new TextField();
 		Label transferAccountErrorLabel = new Label("");
-		transferAccountBox.getChildren().addAll(transferAccountInstructionLabel, transferAccountTextField, transferAccountErrorLabel);
-		
+		transferAccountBox.getChildren().addAll(transferAccountInstructionLabel, transferAccountTextField,
+				transferAccountErrorLabel);
+
 		// Create the user transfer input section and instructions.
 		Label transferInstructionLabel = new Label("Enter the amount you'd like to transfer.");
 		TextField transferAmountTextField = new TextField();
@@ -403,7 +371,8 @@ public class BankingApplicationController {
 		Button doneTransferButton = new Button("Transfer");
 		depositDoneBox.getChildren().addAll(depositErrorLabel, doneTransferButton);
 		transferContainer.getChildren().add(depositDoneBox);
-		doneTransferButton.setOnAction(donetransferEvent -> processTransfer(mainScene,transferAccountTextField,transferAmountTextField, transferAccountErrorLabel));
+		doneTransferButton.setOnAction(donetransferEvent -> processTransfer(mainScene, transferAccountTextField,
+				transferAmountTextField, transferAccountErrorLabel));
 
 		// Load the account creation scene from the main scene.
 		Scene transferScene = new Scene(transferContainer, 400, 100);
@@ -411,31 +380,28 @@ public class BankingApplicationController {
 
 	}
 
-	void processTransfer(Scene mainScene, TextField transferAccountTextField, TextField transferAmountTextField, Label transferAccountErrorLabel) {
+	void processTransfer(Scene mainScene, TextField transferAccountTextField, TextField transferAmountTextField,
+			Label transferAccountErrorLabel) {
 
-		//Check if the account the user would like to trasnfer to exists.
-		if(searchIfAccountExists(transferAccountTextField.getText())==0) {
+		// Check if the account the user would like to transfer to exists.
+		if (searchIfAccountExists(transferAccountTextField.getText()) == 0) {
 			transferAccountErrorLabel.setText("Account does not exist");
 		}
-		
+
 		else {
-			
-			//Return the user to the main home screen
+
+			// Return the user to the main home screen
 			getApplicationStage().setScene(mainScene);
-			
-			//Store the accounts involved in the transfer in their respective variables.
-			Account accountToTrasnferTo= accountSaver(transferAccountTextField.getText());
+
+			// Store the accounts involved in the transfer in their respective variables.
+			Account accountToTrasnferTo = accountSaver(transferAccountTextField.getText());
 			Account currentAccount = accountSaver(searchAccountTextField.getText());
 
 			// Update the balance of the requested account and display the updated value.
-			currentAccount.transfer(accountToTrasnferTo,(Double.parseDouble(transferAmountTextField.getText())));
+			currentAccount.transfer(accountToTrasnferTo, (Double.parseDouble(transferAmountTextField.getText())));
 			balanceDisplay.setText("Updated: $" + String.valueOf(currentAccount.getBalance()));
 		}
-		
-		
 
 	}
 
 }
-
-
