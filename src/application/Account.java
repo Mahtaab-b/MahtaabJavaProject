@@ -10,6 +10,10 @@ public class Account {
 	
 	//Create an account type that consists of a users banking ID, their name and their balance amount.
 	
+	public Account () {
+
+	}
+	
 	public Account (String bankingNumber, String accountName, double balanceAmount) {
 		setAccountNumber(bankingNumber);
 		setAccountHolderName(accountName);
