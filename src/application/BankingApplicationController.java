@@ -37,11 +37,15 @@ public class BankingApplicationController {
 
 	private Stage applicationStage;
 
+	private Label accountNumberErrorLabel= new Label();
+	private Label accountNameErrorLabel= new Label();
+	private Label accountBalanceErrorLabel= new Label();
+	
 	// Create the list of bank accounts opened in the application.
 	Bank accountsRegistered= new Bank();
 
-	Account testOne = new Account("1", "Mahtaab", 50);
-	Account testTwo = new Account("2", "Kevin", 50);
+	Account testOne = new Account("11111111", "Mahtaab", 50);
+	Account testTwo = new Account("22222222", "Kevin", 50);
 
 	// Setter and getter for application stage.
 	public Stage getApplicationStage() {
@@ -57,6 +61,82 @@ public class BankingApplicationController {
 		accountsRegistered.addBankAccounts(testOne);
 		accountsRegistered.addBankAccounts(testTwo);
 
+	}
+	
+	public String isValidAccountNumber(String userNumber) {
+		
+		String errorMessage="";
+		
+		if (userNumber=="") {
+			errorMessage="Please enter an account number.";
+		}
+		
+		else if (userNumber.length()!=8) {
+			errorMessage="Your account number must be 8 characters in length.";
+		}
+		
+		for (char c : userNumber.toCharArray()) {
+			if((!Character.isDigit(c))) {
+				errorMessage= ("Account number should only contain numbers. "+"Don't include the character: " + c);
+			}
+		}
+		
+		return errorMessage;
+	}
+	
+	public String isValidAccountName(String userName) {
+		
+		String errorMessage="";
+		
+		if (userName=="") {
+			errorMessage="Please enter a name.";
+		}
+		
+		for (char c : userName.toCharArray()) {
+			if((!Character.isAlphabetic(c)) && c!= ' ') {
+				errorMessage= ("Account name should only contain letters. "+"Don't include the character: " + c);
+			}
+		}
+		
+		return errorMessage;
+	}
+	
+	public String isValidBalance(String inputBalance) {
+		
+		String errorMessage="";
+
+		int count = 0;
+		
+		
+		if (inputBalance=="") {
+			errorMessage="Please enter a starting balance.";
+		}
+		
+		// check that the user entered only a numeric value
+		for (char c : inputBalance.toCharArray()) {
+
+			// count the number of decimals in the user input
+			if (c == '.') {
+
+				count = count + 1;
+
+			}
+
+			// if the user input has more than one decimal, set the flag to false
+			if (count > 1) {
+				errorMessage=("Balance should not have more than one decimal input.");
+
+			}
+			// if any character is not a digit or decimal, set flag to false as it is not a
+			// number
+			if ((!Character.isDigit(c)) && c != '.') {
+
+				errorMessage= ("Balance should only contain numeric values. " + "Don't include the character: " + c);
+			}
+
+		}
+		
+		return errorMessage;
 	}
 
 
@@ -77,19 +157,19 @@ public class BankingApplicationController {
 		// Create fields for the user to input their account number, name and starting
 		// balance when creating a new account.
 		HBox addAccountNumberHBox = new HBox();
-		Label addAccountNumberLabel = new Label("Add an account holder ID: ");
+		Label addAccountNumberLabel = new Label("Add an 8 digit account number: ");
 		TextField addAccountNumberTextField = new TextField();
-		addAccountNumberHBox.getChildren().addAll(addAccountNumberLabel, addAccountNumberTextField);
+		addAccountNumberHBox.getChildren().addAll(addAccountNumberLabel, addAccountNumberTextField,getAccountNumberErrorLabel());
 
 		HBox addBalanceHBox = new HBox();
 		Label addBalanceLabel = new Label("Add your starting balance: ");
 		TextField addBalanceTextField = new TextField();
-		addBalanceHBox.getChildren().addAll(addBalanceLabel, addBalanceTextField);
+		addBalanceHBox.getChildren().addAll(addBalanceLabel, addBalanceTextField,getAccountBalanceErrorLabel());
 
 		HBox addAccountHolderNameHBox = new HBox();
 		Label addAccountHolderNameLabel = new Label("Add an account holder name: ");
 		TextField addAccountHolderNameTextField = new TextField();
-		addAccountHolderNameHBox.getChildren().addAll(addAccountHolderNameLabel, addAccountHolderNameTextField);
+		addAccountHolderNameHBox.getChildren().addAll(addAccountHolderNameLabel, addAccountHolderNameTextField,getAccountNameErrorLabel());
 
 		// Add all the fields to the container to create the form.
 		createDetailsContainer.getChildren().addAll(addAccountNumberHBox, addAccountHolderNameHBox, addBalanceHBox);
@@ -122,40 +202,43 @@ public class BankingApplicationController {
 
 	void addAnAccount(Scene mainScene, TextField addAccountNumberTextField, TextField addAccountHolderNameTextField,
 			TextField addBalanceTextField, Label accountCreationErrorLabel) {
-
+		
+		
+		getAccountNumberErrorLabel().setText("");
+		getAccountNameErrorLabel().setText("");
+		getAccountBalanceErrorLabel().setText("");
+		
 		// Take the users current account number entry from the
 		// addAccountNumberTextField TextField.
-		String search = addAccountNumberTextField.getText();
-
-		// Convert the users balance entry from a string to double.
-		double balanceValue = Double.parseDouble(addBalanceTextField.getText());
-
-		// Create an account using the users inputed fields.
-		Account bankAccount = new Account(addAccountNumberTextField.getText(), addAccountHolderNameTextField.getText(),
-				balanceValue);
-
-		// Stores the number of duplicates of the requested account, if any.
-		int existsSum = accountsRegistered.searchIfAccountExists(search);
-
-		// If the list of registered accounts is empty add the new account directly.
-		if (accountsRegistered.getBank().size() == 0) {
-			getApplicationStage().setScene(mainScene);
-			searchErrorLabel.setText("");
-
-			accountsRegistered.addBankAccounts(bankAccount);
-
-			System.out.println(accountsRegistered.getBank());
-
-			accountNumberDisplay.setText("");
-			accountHolderNameDisplay.setText("");
-			balanceDisplay.setText("");
+		String searchNumber = addAccountNumberTextField.getText();
+		String searchName = addAccountHolderNameTextField.getText();
+		String searchBalance = addBalanceTextField.getText();
+		
+		if (isValidAccountNumber(searchNumber)!="") {
+			getAccountNumberErrorLabel().setText(isValidAccountNumber(searchNumber));
 		}
+		
+		if (isValidAccountName(searchName)!="") {
+			getAccountNameErrorLabel().setText(isValidAccountName(searchName));
+		}
+		
+		if(isValidBalance(searchBalance)!="") {
+			getAccountBalanceErrorLabel().setText(isValidBalance(searchBalance));
+		}
+		
+		if(isValidAccountNumber(searchNumber)=="" && isValidAccountName(searchName)=="" && isValidBalance(searchBalance)=="") {
+			// Convert the users balance entry from a string to double.
+			double balanceValue = Double.parseDouble(addBalanceTextField.getText());
 
-		else {
+			// Create an account using the users inputed fields.
+			Account bankAccount = new Account(addAccountNumberTextField.getText(), addAccountHolderNameTextField.getText(),
+					balanceValue);
 
-			// If there are no duplicates add the account.
-			if (existsSum == 0) {
+			// Stores the number of duplicates of the requested account, if any.
+			int existsSum = accountsRegistered.searchIfAccountExists(searchNumber);
 
+			// If the list of registered accounts is empty add the new account directly.
+			if (accountsRegistered.getBank().size() == 0) {
 				getApplicationStage().setScene(mainScene);
 				searchErrorLabel.setText("");
 
@@ -168,11 +251,30 @@ public class BankingApplicationController {
 				balanceDisplay.setText("");
 			}
 
-			// Else display an error message that an account with that number exists.
 			else {
-				accountCreationErrorLabel.setText("An account with this number exits.");
+
+				// If there are no duplicates add the account.
+				if (existsSum == 0) {
+
+					getApplicationStage().setScene(mainScene);
+					searchErrorLabel.setText("");
+
+					accountsRegistered.addBankAccounts(bankAccount);
+
+					System.out.println(accountsRegistered.getBank());
+
+					accountNumberDisplay.setText("");
+					accountHolderNameDisplay.setText("");
+					balanceDisplay.setText("");
+				}
+
+				// Else display an error message that an account with that number exists.
+				else {
+					accountCreationErrorLabel.setText("An account with this number exits.");
+				}
 			}
 		}
+		
 	}
 
 	@FXML
@@ -181,21 +283,29 @@ public class BankingApplicationController {
 
 		searchErrorLabel.setText("");
 
+		
 		// Stores the account the user enters in a variable.
 
 		String search = searchAccountTextField.getText();
-
-		if (accountsRegistered.searchIfAccountExists(search) == 0) {
-			searchErrorLabel.setText("No account found");
+		
+		
+		if (isValidAccountNumber(search)!=""){
+			searchErrorLabel.setText(isValidAccountNumber(search));
+			
 		}
-
+		
 		else {
-			accountNumberDisplay.setText(accountsRegistered.accountSaver(search).getAccountNumber());
-			accountHolderNameDisplay.setText(accountsRegistered.accountSaver(search).getLoginName());
-			balanceDisplay.setText("$" + String.valueOf(accountsRegistered.accountSaver(search).getBalance()));
-
+			if (accountsRegistered.searchIfAccountExists(search) == 0) {
+				searchErrorLabel.setText("No account found");
+			}
+	
+			else {
+				accountNumberDisplay.setText(accountsRegistered.accountSaver(search).getAccountNumber());
+				accountHolderNameDisplay.setText(accountsRegistered.accountSaver(search).getLoginName());
+				balanceDisplay.setText("$" + String.valueOf(accountsRegistered.accountSaver(search).getBalance()));
+	
+			}
 		}
-
 	}
 
 	@FXML
@@ -357,6 +467,30 @@ public class BankingApplicationController {
 			balanceDisplay.setText("Updated: $" + String.valueOf(currentAccount.getBalance()));
 		}
 
+	}
+
+	public Label getAccountNumberErrorLabel() {
+		return accountNumberErrorLabel;
+	}
+
+	public void setAccountNumberErrorLabel(Label accountNumberErrorLabel) {
+		this.accountNumberErrorLabel = accountNumberErrorLabel;
+	}
+
+	public Label getAccountNameErrorLabel() {
+		return accountNameErrorLabel;
+	}
+
+	public void setAccountNameErrorLabel(Label accountNameErrorLabel) {
+		this.accountNameErrorLabel = accountNameErrorLabel;
+	}
+
+	Label getAccountBalanceErrorLabel() {
+		return accountBalanceErrorLabel;
+	}
+
+	void setAccountBalanceErrorLabel(Label accountBalanceErrorLabel) {
+		this.accountBalanceErrorLabel = accountBalanceErrorLabel;
 	}
 
 }
