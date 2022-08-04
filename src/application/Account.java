@@ -26,21 +26,27 @@ public class Account {
 	
 	//A deposit method to add money to an account.
 	public void deposit (double depositAmount) {
-		setBalance(getBalance() + depositAmount);
+		
+		if(depositAmount>0) {
+			setBalance(getBalance() + depositAmount);
+		}
 	}
 	
 	//A transfer method to transfer money between accounts.
 	public void transfer (Account otherAccount, double transferAmount) {
-		setBalance(getBalance() - transferAmount);
-		otherAccount.deposit(transferAmount);
-		
+		if(checkFunds(getBalance(), transferAmount)) {
+			setBalance(getBalance() - transferAmount);
+			otherAccount.deposit(transferAmount);
+			}
 		}
 	
 	//A withdraw method to withdraw money from an account.
 	public void withdraw (double withdrawAmount) {
-		setBalance(getBalance() - withdrawAmount);
+		if(checkFunds(getBalance(), withdrawAmount)){
+			setBalance(getBalance() - withdrawAmount);
 		}
 
+	}
 	//Setter and getters for the instance variables accountNumber, accountHolderName and balance.
 	public String getAccountNumber() {
 		return accountNumber;
@@ -63,7 +69,19 @@ public class Account {
 	}
 
 	public void setBalance(double accountBalance) {
-		balance = accountBalance;
+		if(accountBalance>0) {
+			balance = accountBalance;
+		}
 	}
 	
+	public boolean checkFunds(double balanceAmount, double amount) {
+		boolean checker=false;
+		
+		if(balanceAmount>0 && balanceAmount-amount>0) {
+			checker=true;
+		}
+		
+		return checker;
+	}
 }
+	
