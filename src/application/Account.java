@@ -7,21 +7,30 @@ public class Account {
 	private String accountNumber;
 	private String accountHolderName;
 	private double balance;
-	
+	private boolean isSavings;
 	//Create an account type that consists of a users banking ID, their name and their balance amount.
 	
-	public Account () {
-
+	public Account() {
+		
 	}
 	
-	public Account (String bankingNumber, String accountName, double balanceAmount) {
+	public Account (Account bankAccount) {
+		setAccountNumber(bankAccount.getAccountNumber());
+		setAccountHolderName(bankAccount.getLoginName());
+		setBalance(bankAccount.getBalance());
+		
+	}
+	
+	public Account (String bankingNumber, String accountName, double balanceAmount, String savingsOrChequing) {
 		setAccountNumber(bankingNumber);
 		setAccountHolderName(accountName);
 		setBalance(balanceAmount);
+		setIsSavings(savingsOrChequing);
 	}
 	
+
 	public String toString () {
-		return "An account exists" + accountNumber;
+		return "An account exists" + accountNumber+ isSavings;
 	}
 	
 	//A deposit method to add money to an account.
@@ -82,6 +91,22 @@ public class Account {
 		}
 		
 		return checker;
+	}
+
+	boolean getIsSavings() {
+		return isSavings;
+	}
+
+	public void setIsSavings(String type) {
+		
+		if (type=="Savings") {
+			isSavings=true;
+		}
+		
+		else {
+			isSavings=false;
+		}
+		
 	}
 }
 	

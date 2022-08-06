@@ -22,6 +22,10 @@ public class Bank {
 		bank.add(a);
 	}
 	
+	public void removeBankAccounts (Account a) {
+		bank.remove(a);
+	}
+	
 	public int searchIfAccountExists(String accountNumber) {
 
 		int exists = 0;

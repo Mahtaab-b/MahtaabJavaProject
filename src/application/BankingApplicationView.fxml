@@ -7,12 +7,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BankingApplicationController">
+<VBox prefHeight="366.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BankingApplicationController">
    <children>
       <Label text="Select an account or input to create your own">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
+         <padding>
+            <Insets left="60.0" />
+         </padding>
       </Label>
       <TextField fx:id="searchAccountTextField">
          <VBox.margin>
@@ -25,11 +28,11 @@
       </Label>
       <HBox prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#openAnAccountScene" text="Open this account">
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#openAnAccountScene" text="Open this account">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" onAction="#createAccountsScene" text="Create an Account">
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#createAccountsScene" text="Create an Account">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin></Button>
@@ -37,8 +40,11 @@
          <VBox.margin>
             <Insets />
          </VBox.margin>
+         <padding>
+            <Insets left="30.0" />
+         </padding>
       </HBox>
-      <HBox prefHeight="50.0" prefWidth="200.0">
+      <HBox prefHeight="50.0" prefWidth="95.0">
          <children>
             <Label text="Account Number: ">
                <HBox.margin>
@@ -75,22 +81,41 @@
          </children>
       </HBox>
       <HBox prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Label text="Account Type:">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="typeDisplay" text="****">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0">
          <VBox.margin>
             <Insets />
          </VBox.margin>
          <children>
-            <Button mnemonicParsing="false" text="Deposit" onAction="#startDeposit">
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startDeposit" text="Deposit">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" text="Withdraw" onAction="#startWithdrawal">
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startWithdrawal" text="Withdraw">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" text="Transfer" onAction="#startTransfer">
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startTransfer" text="Transfer">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" text="Savings Calculator" textAlignment="CENTER">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
    </children>
