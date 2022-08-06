@@ -65,5 +65,25 @@ public class Bank {
 		return takeThisAccount;
 	}
 	
+	public Account savingsAccountSaver(String accountNumber) {
+
+		SavingsAccount takeThisAccount = new SavingsAccount();
+
+		int index = 0;
+
+		while (index < getBank().size()) {
+
+			if (accountNumber.equals(getBank().get(index).getAccountNumber())) {
+				takeThisAccount = (SavingsAccount) getBank().get(index);
+				break;
+			}
+
+			index++;
+		}
+
+		return takeThisAccount;
+	}
+	
+	
 
 }
