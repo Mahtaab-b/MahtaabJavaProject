@@ -3,29 +3,29 @@ package application;
 import java.util.ArrayList;
 
 public class Bank {
-	
-	private ArrayList <Account> bank = new ArrayList<Account>();
+
+	private ArrayList<Account> bank = new ArrayList<Account>();
 
 	public Bank() {
 		setBank(new ArrayList<Account>());
 	}
-	
-	public ArrayList <Account> getBank() {
+
+	public ArrayList<Account> getBank() {
 		return bank;
 	}
 
-	public void setBank(ArrayList <Account> bank) {
+	public void setBank(ArrayList<Account> bank) {
 		this.bank = bank;
 	}
-	
+
 	public void addBankAccounts(Account a) {
 		bank.add(a);
 	}
-	
-	public void removeBankAccounts (Account a) {
+
+	public void removeBankAccounts(Account a) {
 		bank.remove(a);
 	}
-	
+
 	public int searchIfAccountExists(String accountNumber) {
 
 		int exists = 0;
@@ -64,7 +64,7 @@ public class Bank {
 
 		return takeThisAccount;
 	}
-	
+
 	public Account savingsAccountSaver(String accountNumber) {
 
 		SavingsAccount takeThisAccount = new SavingsAccount();
@@ -83,7 +83,5 @@ public class Bank {
 
 		return takeThisAccount;
 	}
-	
-	
 
 }

@@ -1,7 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -53,6 +51,7 @@ public class BankingApplicationController {
 	private Label accountTypeErrorLabel = new Label();
 	private Label interestSelectionErrorLabel = new Label();
 	private Label periodInputErrorLabel = new Label();
+	private Label compoundInputErrorLabel = new Label();
 
 	private double thisIsFutureValue;
 
@@ -366,7 +365,7 @@ public class BankingApplicationController {
 			else {
 				accountNumberDisplay.setText(accountsRegistered.accountSaver(search).getAccountNumber());
 				accountHolderNameDisplay.setText(accountsRegistered.accountSaver(search).getLoginName());
-				balanceDisplay.setText("$" + String.valueOf(accountsRegistered.accountSaver(search).getBalance()));
+				balanceDisplay.setText("$" + (String.valueOf(accountsRegistered.accountSaver(search).getBalance())));
 
 				if ((accountsRegistered.accountSaver(search).getIsSavings() == false)) {
 					typeDisplay.setText("Checking");
@@ -376,7 +375,7 @@ public class BankingApplicationController {
 				else {
 					SavingsAccount temporary = (SavingsAccount) accountsRegistered.accountSaver(search);
 					typeDisplay.setText("Savings");
-					futureValue.setText("$" + String.format("%2f", temporary.getFutureValue()));
+					futureValue.setText("$" + String.format("%.2f", temporary.getFutureValue()));
 				}
 			}
 		}
@@ -484,15 +483,17 @@ public class BankingApplicationController {
 				}
 
 				else {
-					
+
 					applicationStage.setScene(mainScene);
-					
-					if (withdrawalAccount.getIsSavings()==true) {
+
+					if (withdrawalAccount.getIsSavings() == true) {
 						searchErrorLabel.setText("Insufficient funds. Savings account cannot fall below $1000.");
 					}
-					
+
 					else {
-						searchErrorLabel.setText("Insufficient funds.");
+						searchErrorLabel.setText("Insufficient funds. Overdraft fee charged");
+						withdrawalAccount.overdraftFee();
+						balanceDisplay.setText("Updated: $" + String.valueOf(withdrawalAccount.getBalance()));
 					}
 				}
 			}
@@ -693,13 +694,13 @@ public class BankingApplicationController {
 					}
 
 					else {
-						
+
 						applicationStage.setScene(mainScene);
-						
-						if (currentAccount.getIsSavings()==true) {
+
+						if (currentAccount.getIsSavings() == true) {
 							searchErrorLabel.setText("Insufficient funds. Savings account cannot fall below $1000.");
 						}
-						
+
 						else {
 							searchErrorLabel.setText("Insufficient funds.");
 						}
@@ -730,6 +731,14 @@ public class BankingApplicationController {
 		savingsPeriodBox.getChildren().addAll(savingsInstructionLabelTwo, savingsAmountTextField,
 				periodInputErrorLabel);
 
+		HBox savingsCompoundBox = new HBox();
+		Label compoundInstructionLabel = new Label("Select the compound frequency of your investment.");
+		ChoiceBox savingsCompoundChoiceBox = new ChoiceBox();
+		savingsCompoundChoiceBox.getItems().addAll("Monthly", "Semi-Annually", "Annually");
+		savingsCompoundBox.getChildren().addAll(compoundInstructionLabel, savingsCompoundChoiceBox,
+				compoundInputErrorLabel);
+		savingsContainer.getChildren().add(savingsCompoundBox);
+
 		HBox savingsDoneBox = new HBox();
 		Label savingsErrorLabel = new Label("");
 		Button savingsDoneButton = new Button("Done");
@@ -737,7 +746,7 @@ public class BankingApplicationController {
 		savingsContainer.getChildren().add(savingsDoneBox);
 
 		savingsDoneButton.setOnAction(donetransferEvent -> processSavingsScene(mainScene, savingsAmountChoiceBox,
-				savingsAmountTextField, savingsErrorLabel, bankAccount));
+				savingsAmountTextField, savingsCompoundChoiceBox, savingsErrorLabel, bankAccount));
 
 		Scene savingsMenuScene = new Scene(savingsContainer);
 		getApplicationStage().setScene(savingsMenuScene);
@@ -745,12 +754,14 @@ public class BankingApplicationController {
 	}
 
 	void processSavingsScene(Scene mainScene, ChoiceBox savingsAmountChoiceBox, TextField savingsAmountTextField,
-			Label savingsErrorLabel, Account bankAccount) {
+			ChoiceBox savingsCompoundChoiceBox, Label savingsErrorLabel, Account bankAccount) {
 
 		interestSelectionErrorLabel.setText("");
 		periodInputErrorLabel.setText("");
+		compoundInputErrorLabel.setText("");
 
 		Object interestRateSelection = savingsAmountChoiceBox.getValue();
+		Object compoundRateSelection = savingsCompoundChoiceBox.getValue();
 
 		if (interestRateSelection == null) {
 			interestSelectionErrorLabel.setText("Please select an interest rate.");
@@ -760,16 +771,23 @@ public class BankingApplicationController {
 			periodInputErrorLabel.setText(isValidPeriod(savingsAmountTextField.getText()));
 		}
 
-		if (interestRateSelection != null && isValidPeriod(savingsAmountTextField.getText()) == "") {
+		if (compoundRateSelection == null) {
+			compoundInputErrorLabel.setText("Please select a compound frequency.");
+		}
+
+		if (interestRateSelection != null && isValidPeriod(savingsAmountTextField.getText()) == ""
+				&& compoundRateSelection != null) {
 			// Return the user to the main home screen
 			getApplicationStage().setScene(mainScene);
 
 			// Gather the inputed user account number and store it in the search variable.
 			int interestRateSelected = Integer.valueOf((((String) savingsAmountChoiceBox.getValue())));
 			int periodSpecified = Integer.valueOf(savingsAmountTextField.getText());
+			String compoundSelected = savingsCompoundChoiceBox.getValue().toString();
 
 			// Create a new account to reference in the deposit method later.
-			SavingsAccount savingAccount = new SavingsAccount(bankAccount, periodSpecified, interestRateSelected, 0);
+			SavingsAccount savingAccount = new SavingsAccount(bankAccount, periodSpecified, interestRateSelected,
+					compoundSelected, 0);
 
 			savingAccount.setIsSavings("Savings");
 
@@ -825,6 +843,14 @@ public class BankingApplicationController {
 			savingsPeriodBox.getChildren().addAll(savingsInstructionLabelTwo, savingsAmountTextField,
 					periodInputErrorLabel);
 
+			HBox savingsCompoundBox = new HBox();
+			Label compoundInstructionLabel = new Label("Select the compound frequency of your investment.");
+			ChoiceBox savingsCompoundChoiceBox = new ChoiceBox();
+			savingsCompoundChoiceBox.getItems().addAll("Monthly", "Semi-Annually", "Annually");
+			savingsCompoundBox.getChildren().addAll(compoundInstructionLabel, savingsCompoundChoiceBox,
+					compoundInputErrorLabel);
+			savingsContainer.getChildren().add(savingsCompoundBox);
+
 			HBox savingsDoneBox = new HBox();
 			Label savingsErrorLabel = new Label("");
 			Button savingsDoneButton = new Button("Done");
@@ -832,7 +858,7 @@ public class BankingApplicationController {
 			savingsContainer.getChildren().add(savingsDoneBox);
 
 			savingsDoneButton.setOnAction(donetransferEvent -> processSavingsButton(mainScene, savingsAmountChoiceBox,
-					savingsAmountTextField, savingsErrorLabel, search));
+					savingsAmountTextField, savingsCompoundChoiceBox, savingsErrorLabel, search));
 
 			Scene savingsMenuScene = new Scene(savingsContainer);
 			getApplicationStage().setScene(savingsMenuScene);
@@ -840,20 +866,43 @@ public class BankingApplicationController {
 	}
 
 	void processSavingsButton(Scene mainScene, ChoiceBox savingsAmountChoiceBox, TextField savingsAmountTextField,
-			Label savingsErrorLabel, String search) {
+			ChoiceBox savingsCompoundChoiceBox, Label savingsErrorLabel, String search) {
 
-		getApplicationStage().setScene(mainScene);
+		interestSelectionErrorLabel.setText("");
+		periodInputErrorLabel.setText("");
+		compoundInputErrorLabel.setText("");
 
-		SavingsAccount tester = (SavingsAccount) accountsRegistered.savingsAccountSaver(search);
+		Object interestRateSelection = savingsAmountChoiceBox.getValue();
+		Object compoundRateSelection = savingsCompoundChoiceBox.getValue();
 
-		tester.setInterestRate(Integer.valueOf((((String) savingsAmountChoiceBox.getValue()))));
-		tester.setPeriod(Integer.valueOf(savingsAmountTextField.getText()));
+		if (interestRateSelection == null) {
+			interestSelectionErrorLabel.setText("Please select an interest rate.");
+		}
 
-		tester.setFutureValue(tester.futureValueCalculator(tester));
-		System.out.println(tester.getFutureValue());
+		if (isValidPeriod(savingsAmountTextField.getText()) != "") {
+			periodInputErrorLabel.setText(isValidPeriod(savingsAmountTextField.getText()));
+		}
 
-		futureValue.setText("Updated: $" + tester.getFutureValue());
+		if (compoundRateSelection == null) {
+			compoundInputErrorLabel.setText("Please select a compound frequency.");
+		}
 
+		if (interestRateSelection != null && isValidPeriod(savingsAmountTextField.getText()) == ""
+				&& compoundRateSelection != null) {
+
+			getApplicationStage().setScene(mainScene);
+
+			SavingsAccount tester = (SavingsAccount) accountsRegistered.savingsAccountSaver(search);
+
+			tester.setInterestRate(Integer.valueOf((((String) savingsAmountChoiceBox.getValue()))));
+			tester.setPeriod(Integer.valueOf(savingsAmountTextField.getText()));
+			tester.setCompoundFrequency((String) savingsCompoundChoiceBox.getValue());
+
+			tester.setFutureValue(tester.futureValueCalculator(tester));
+			System.out.println(tester.getFutureValue());
+
+			futureValue.setText("Updated: $" + String.format("%.2f", tester.getFutureValue()));
+		}
 	}
 
 	public Label getAccountNumberErrorLabel() {
