@@ -7,6 +7,9 @@ public class SavingsAccount extends Account {
 	private double period;
 	private double interestRate;
 	private double futureValue;
+	private static int numberOfWithdraw=0;
+	private double minimumBalance=1000.0;
+	
 	
 	public SavingsAccount() {
 		
@@ -24,6 +27,15 @@ public class SavingsAccount extends Account {
 	
 	public String toString () {
 		return "A savings account exists" + getAccountNumber()+ getLoginName()+getBalance()+ getIsSavings()+period+interestRate;
+	}
+	
+	public void withdraw (double withdrawAmount) {
+		
+		
+		if(getNumberOfWithdraw()<=4) {
+			super.withdraw(withdrawAmount+20.0);
+			numberOfWithdraw = getNumberOfWithdraw() + 1;
+		}
 	}
 
 
@@ -54,6 +66,20 @@ public class SavingsAccount extends Account {
 
 	void setFutureValue(double futureValue) {
 		this.futureValue = futureValue;
+	}
+
+	public static int getNumberOfWithdraw() {
+		return numberOfWithdraw;
+	}
+	
+	public boolean checkFunds(double balanceAmount, double amount) {
+		boolean checker=false;
+		
+		if(balanceAmount>0 && balanceAmount-amount>minimumBalance) {
+			checker=true;
+		}
+		
+		return checker;
 	}
 
 }

@@ -8,6 +8,8 @@ public class Account {
 	private String accountHolderName;
 	private double balance;
 	private boolean isSavings;
+
+	
 	//Create an account type that consists of a users banking ID, their name and their balance amount.
 	
 	public Account() {
