@@ -11,7 +11,7 @@
 	xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="application.BankingApplicationController">
 	<children>
-		<Label text="Select an account or input to create your own">
+		<Label text="Search for an account number or create a new account.">
 			<VBox.margin>
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 			</VBox.margin>
@@ -149,7 +149,7 @@
 					</HBox.margin>
 				</Button>
 				<Button minWidth="-Infinity" mnemonicParsing="false"
-					onAction="#startSavings" text="Savings Calculator"
+					onAction="#startSavingsFromButton" text="Savings Calculator"
 					textAlignment="CENTER">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

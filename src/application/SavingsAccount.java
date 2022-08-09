@@ -12,6 +12,8 @@ public class SavingsAccount extends Account {
 	private String compoundFrequency = "Annually";
 	private int numberOfCompounds;
 
+	// Constructors featured below.
+
 	public SavingsAccount() {
 
 	}
@@ -40,10 +42,19 @@ public class SavingsAccount extends Account {
 
 	}
 
+	// Display the arguments of a savings account object in a string representation.
+
 	public String toString() {
-		return "A savings account exists" + getAccountNumber() + getLoginName() + getBalance() + getIsSavings() + period
-				+ interestRate;
+		return "Account Number:" + getAccountNumber() + " Account Holder Name: " + getLoginName() + " Balance: "
+				+ +getBalance() + " Savings: " + getIsSavings() + " Period: " + period + " Interest Rate: "
+				+ interestRate + " Compound Frequency: " + compoundFrequency;
 	}
+
+	/**
+	 * Checks if a savings account has allowed 4 or less withdrawals (the withdrawal
+	 * limit) and then subtracts the inputed amount and a 20 dollar fee from the
+	 * account balance.
+	 */
 
 	public void withdraw(double withdrawAmount) {
 
@@ -69,10 +80,20 @@ public class SavingsAccount extends Account {
 		this.interestRate = interestRate;
 	}
 
+	/**
+	 * Utilizes account balance, interest rate, and compound frequency to return the
+	 * future value of the balance over an inputed time period.
+	 * 
+	 * @param savings an object of type SavingsAccount upon which a future value
+	 *                calculation may be processed.
+	 * @return future value a double representation of the future value of an
+	 *         investment.
+	 */
+
 	public double futureValueCalculator(SavingsAccount savings) {
-		double fiv = savings.getBalance()
+		double futureValue = savings.getBalance()
 				* Math.pow((1 + getInterestRate() / 100), getPeriod() * getNumberOfCompounds());
-		return fiv;
+		return futureValue;
 	}
 
 	double getFutureValue() {
@@ -87,15 +108,24 @@ public class SavingsAccount extends Account {
 		return numberOfWithdraw;
 	}
 
-	public boolean checkFunds(double balanceAmount, double amount) {
+	/**
+	 * Checks if an account balance will still be greater than the minimum balance
+	 * of $1000 in order to process the inputed withdrawal amount and then subtracts
+	 * said withdrawal amount from the account balance.
+	 * 
+	 * @param amount a double value referencing the amount a user would like to
+	 *               withdraw/transfer.
+	 */
+	public boolean checkSufficientFunds(double amount) {
 		boolean checker = false;
 
-		if (balanceAmount > 0 && balanceAmount - amount > minimumBalance) {
+		if (getBalance() > 0 && getBalance() - amount > minimumBalance) {
 			checker = true;
 		}
 
 		return checker;
 	}
+
 
 	public int getNumberOfCompounds() {
 
